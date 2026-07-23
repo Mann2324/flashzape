@@ -100,7 +100,6 @@ function openRazorpayCheckout() {
 
 document.querySelector('#on').addEventListener('click', turnTorchOn);
 document.querySelector('#off').addEventListener('click', showOffChallenge);
-document.querySelector('#safeOff').addEventListener('click', turnTorchOff);
 document.querySelector('#pay').addEventListener('click', openRazorpayCheckout);
 
 window.addEventListener('pagehide', () => {
