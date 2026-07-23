@@ -97,11 +97,4 @@ function openRazorpayCheckout() {
 
   checkout.open();
 }
-
-document.querySelector('#on').addEventListener('click', turnTorchOn);
-document.querySelector('#off').addEventListener('click', showOffChallenge);
-document.querySelector('#pay').addEventListener('click', openRazorpayCheckout);
-
-window.addEventListener('pagehide', () => {
-  cameraStream?.getTracks().forEach(track => track.stop());
 });
