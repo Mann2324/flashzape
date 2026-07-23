@@ -4,6 +4,9 @@ const beam = document.querySelector('#beam');
 const modal = document.querySelector('#modal');
 const statusEl = document.querySelector('#status');
 const toast = document.querySelector('#toast');
+const onButton = document.querySelector('#on');
+const offButton = document.querySelector('#off');
+const payButton = document.querySelector('#pay');
 
 let flashlightOn = false;
 let cameraStream = null;
@@ -49,7 +52,6 @@ async function turnTorchOff() {
         await videoTrack.applyConstraints({ advanced: [{ torch: false }] });
       }
     }
-
     cameraStream?.getTracks().forEach(track => track.stop());
   } catch (error) {
     console.error(error);
@@ -72,6 +74,12 @@ function showOffChallenge() {
 }
 
 function openRazorpayCheckout() {
+  if (!flashlightOn) {
+    modal.classList.remove('show');
+    showMessage('Flashlight is already off');
+    return;
+  }
+
   if (typeof Razorpay === 'undefined') {
     showMessage('Razorpay could not load');
     return;
@@ -82,19 +90,22 @@ function openRazorpayCheckout() {
     amount: 1000,
     currency: 'INR',
     name: 'FlashZape',
-    description: '₹10 Test Challenge',
+    description: 'Turn off flashlight unlock',
     handler: function () {
-      showMessage('Test payment completed');
+      showMessage('Payment completed — flashlight unlocked');
       turnTorchOff();
     },
     theme: { color: '#ffd400' },
     modal: {
       ondismiss: function () {
-        showMessage('Payment cancelled');
+        showMessage('Payment cancelled — flashlight stays on');
       }
     }
   });
 
   checkout.open();
 }
-});
+
+onButton.addEventListener('click', turnTorchOn);
+offButton.addEventListener('click', showOffChallenge);
+payButton.addEventListener('click', openRazorpayCheckout);
