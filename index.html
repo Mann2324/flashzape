@@ -1,1 +1,58 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#05070c"><title>FlashZape</title><style>*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:radial-gradient(circle at 50% 28%,#17243a 0,#080d17 38%,#020409 78%);color:#fff;min-height:100vh}.app{min-height:100vh;display:flex;flex-direction:column;align-items:center}.top{width:min(1050px,92%);height:76px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:26px;font-weight:900;font-style:italic}.brand b{color:#ffd400}.status{font-size:11px;color:#9da7b7;border:1px solid #263044;padding:8px 12px;border-radius:99px}.stage{flex:1;display:grid;place-items:center;width:100%;overflow:hidden}.torch{position:relative;width:180px;height:390px;filter:drop-shadow(0 25px 28px #000)}.beam{position:absolute;left:50%;bottom:330px;transform:translateX(-50%);width:520px;height:400px;background:radial-gradient(ellipse at bottom,rgba(255,255,255,.98),rgba(186,213,255,.32) 38%,transparent 68%);filter:blur(10px);opacity:0;transition:.35s}.beam.on{opacity:1}.head{position:absolute;width:180px;height:100px;border-radius:28px 28px 15px 15px;background:linear-gradient(90deg,#0c1018,#414a59,#0b0e14);border:2px solid #596273}.neck{position:absolute;top:95px;left:27px;width:126px;height:75px;background:linear-gradient(90deg,#090c12,#303846,#090c12);border-radius:0 0 22px 22px}.body{position:absolute;top:150px;left:37px;width:106px;height:230px;border-radius:13px 13px 27px 27px;border:2px solid #343c49;background:repeating-linear-gradient(45deg,#10141b,#10141b 4px,#1c222c 4px,#1c222c 8px)}.power{margin:30px auto;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:#151b18;border:5px solid #090b0d;color:#55ff76;font-size:28px;box-shadow:0 0 15px rgba(70,255,100,.3)}.controls{width:min(900px,94%);display:flex;gap:18px;padding:18px 0 35px}.btn{flex:1;min-height:92px;border-radius:18px;background:#07100c;color:#60ff7a;border:1px solid #48ef65;font-weight:900;font-size:21px;cursor:pointer}.btn.off{background:#120707;color:#ff4c4c;border-color:#ff4141}.btn small{display:block;font-weight:500;opacity:.7;margin-top:7px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.84);backdrop-filter:blur(10px);display:none;place-items:center;padding:20px;z-index:10}.modal.show{display:grid}.card{width:min(410px,100%);padding:34px 28px;text-align:center;border-radius:24px;background:linear-gradient(160deg,#121a27,#07090e);border:1px solid #ff4141}.lock{font-size:48px}.card h1{font-size:27px;margin:12px 0 6px}.card p{color:#aab2c0;line-height:1.5}.price{font-size:48px;font-weight:900;color:#ffd400;margin:16px}.pay,.safe{width:100%;border-radius:12px;padding:16px;font-weight:900;cursor:pointer}.pay{border:0;background:#ffd400;font-size:17px}.safe{margin-top:12px;border:1px solid #303a49;background:#0c111a;color:#d7dce5}.note{font-size:11px;color:#727b89;margin-top:14px}.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#101722;border:1px solid #2e3949;padding:12px 18px;border-radius:12px;display:none;z-index:20}.toast.show{display:block}@media(max-width:600px){.top{height:64px}.brand{font-size:22px}.status{font-size:9px}.torch{transform:scale(.76)}.controls{gap:10px;padding-bottom:22px}.btn{min-height:82px;font-size:17px}.btn small{font-size:10px}}</style></head><body><div id="toast" class="toast"></div><div class="app"><header class="top"><div class="brand">⚡ Flash<b>Zape</b></div><div id="status" class="status">FLASHLIGHT READY</div></header><main class="stage"><div class="torch"><div id="beam" class="beam"></div><div class="head"></div><div class="neck"></div><div class="body"><div class="power">⏻</div></div></div></main><div class="controls"><button class="btn" id="on">⏻ TURN ON<small>Start flashlight</small></button><button class="btn off" id="off">⏻ TURN OFF<small>Turn off flashlight</small></button></div></div><div class="modal" id="modal"><div class="card"><div class="lock">🔒</div><h1>FlashZape Challenge</h1><p>Unlock the ₹10 FlashZape challenge with Razorpay.</p><div class="price">₹10</div><button class="pay" id="pay">PAY ₹10 WITH RAZORPAY</button><button class="safe" id="safeOff">Turn Off Without Paying</button><div class="note">Test Mode. Device flashlight always has a free shutoff option.</div></div></div><script src="https://checkout.razorpay.com/v1/checkout.js"></script><script>const KEY='rzp_test_TGpciUKLdCEMnr',beam=document.querySelector('#beam'),modal=document.querySelector('#modal'),statusEl=document.querySelector('#status'),toast=document.querySelector('#toast');let on=false,stream=null,track=null;function msg(t){toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500)}async function torchOn(){if(on)return;on=true;beam.classList.add('on');statusEl.textContent='FLASHLIGHT ON';try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}});track=stream.getVideoTracks()[0];const caps=track.getCapabilities?.();if(caps?.torch){await track.applyConstraints({advanced:[{torch:true}]});msg('Phone torch is ON')}else msg('Torch API unavailable — visual light active')}catch(e){msg('Camera unavailable — visual light active')}}async function torchOff(){try{if(track){const caps=track.getCapabilities?.();if(caps?.torch)await track.applyConstraints({advanced:[{torch:false}]})}stream?.getTracks().forEach(t=>t.stop())}catch(e){}track=null;stream=null;on=false;beam.classList.remove('on');modal.classList.remove('show');statusEl.textContent='FLASHLIGHT READY'}document.querySelector('#on').onclick=torchOn;document.querySelector('#off').onclick=()=>{if(!on){msg('Turn the flashlight on first');return}modal.classList.add('show')};document.querySelector('#safeOff').onclick=torchOff;document.querySelector('#pay').onclick=()=>{if(typeof Razorpay==='undefined'){msg('Razorpay could not load');return}new Razorpay({key:KEY,amount:1000,currency:'INR',name:'FlashZape',description:'₹10 Test Challenge',handler:function(){msg('Test payment completed');torchOff()},theme:{color:'#ffd400'},modal:{ondismiss:function(){msg('Payment cancelled')}}}).open()};window.addEventListener('pagehide',()=>stream?.getTracks().forEach(t=>t.stop()));</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#05070c">
+  <title>FlashZape</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <div class="app">
+    <header class="top">
+      <div class="brand">⚡ Flash<b>Zape</b></div>
+      <div id="status" class="status">FLASHLIGHT READY</div>
+    </header>
+
+    <main class="stage">
+      <div class="torch">
+        <div id="beam" class="beam"></div>
+        <div class="head"></div>
+        <div class="neck"></div>
+        <div class="body">
+          <div class="power">⏻</div>
+        </div>
+      </div>
+    </main>
+
+    <div class="controls">
+      <button class="btn" id="on">
+        ⏻ TURN ON
+        <small>Start flashlight</small>
+      </button>
+
+      <button class="btn off" id="off">
+        ⏻ TURN OFF
+        <small>Turn off flashlight</small>
+      </button>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="card">
+      <div class="lock">🔒</div>
+      <h1>FlashZape Challenge</h1>
+      <p>Unlock the ₹10 FlashZape challenge with Razorpay.</p>
+      <div class="price">₹10</div>
+      <button class="pay" id="pay">PAY ₹10 WITH RAZORPAY</button>
+      <button class="safe" id="safeOff">Turn Off Without Paying</button>
+      <div class="note">Test Mode. Device flashlight always has a free shutoff option.</div>
+    </div>
+  </div>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
