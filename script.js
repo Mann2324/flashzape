@@ -15,40 +15,76 @@ let videoTrack = null;
 function showMessage(text) {
   toast.textContent = text;
   toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2500);
+  setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
 async function turnTorchOn() {
   if (flashlightOn) return;
 
-  flashlightOn = true;
-  beam.classList.add('on');
-  statusEl.textContent = 'FLASHLIGHT ON';
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    showMessage('Camera access requires HTTPS and a supported mobile browser');
+    return;
+  }
+
+  onButton.disabled = true;
+  statusEl.textContent = 'TURNING ON...';
 
   try {
     cameraStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: 'environment' } }
-    });
+      video: { facingMode: { exact: 'environment' } },
+      audio: false
+    }).catch(() => navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' },
+      audio: false
+    }));
 
     videoTrack = cameraStream.getVideoTracks()[0];
-    const capabilities = videoTrack.getCapabilities?.();
+    if (!videoTrack) throw new Error('No camera track available');
 
-    if (capabilities?.torch) {
-      await videoTrack.applyConstraints({ advanced: [{ torch: true }] });
-      showMessage('Phone torch is ON');
-    } else {
-      showMessage('Torch API unavailable — visual light active');
+    const capabilities = typeof videoTrack.getCapabilities === 'function'
+      ? videoTrack.getCapabilities()
+      : {};
+
+    if (!capabilities.torch) {
+      cameraStream.getTracks().forEach(track => track.stop());
+      cameraStream = null;
+      videoTrack = null;
+      statusEl.textContent = 'TORCH NOT SUPPORTED';
+      showMessage('This browser/device does not allow website torch control. Try Chrome on Android.');
+      return;
     }
+
+    await videoTrack.applyConstraints({ advanced: [{ torch: true }] });
+
+    flashlightOn = true;
+    beam.classList.add('on');
+    statusEl.textContent = 'FLASHLIGHT ON';
+    showMessage('Phone torch is ON');
   } catch (error) {
-    showMessage('Camera unavailable — visual light active');
+    console.error('Torch error:', error);
+    flashlightOn = false;
+    beam.classList.remove('on');
+    statusEl.textContent = 'FLASHLIGHT READY';
+
+    if (error?.name === 'NotAllowedError' || error?.name === 'PermissionDeniedError') {
+      showMessage('Allow camera permission, then tap TURN ON again');
+    } else if (error?.name === 'NotFoundError' || error?.name === 'OverconstrainedError') {
+      showMessage('Rear camera could not be accessed');
+    } else {
+      showMessage('Could not turn on phone torch. Try Chrome on Android over HTTPS.');
+    }
+  } finally {
+    onButton.disabled = false;
   }
 }
 
 async function turnTorchOff() {
   try {
     if (videoTrack) {
-      const capabilities = videoTrack.getCapabilities?.();
-      if (capabilities?.torch) {
+      const capabilities = typeof videoTrack.getCapabilities === 'function'
+        ? videoTrack.getCapabilities()
+        : {};
+      if (capabilities.torch) {
         await videoTrack.applyConstraints({ advanced: [{ torch: false }] });
       }
     }
