@@ -1,59 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#07070a">
-  <meta name="description" content="FlashZape privacy-first email intelligence checker">
-  <title>FlashZape — Email Intelligence</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#07070a"><meta name="description" content="FlashZape authorized email intelligence workspace"><title>FlashZape — Email Intelligence</title><link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="app-shell">
-    <header class="topbar">
-      <div class="brand"><span class="brand-mark">FZ</span><span>Flash<b>Zape</b></span></div>
-      <span class="pill"><i></i> PRIVACY-FIRST MODE</span>
-    </header>
-    <main>
-      <section class="hero">
-        <div class="eyebrow">EMAIL OSINT WORKSPACE</div>
-        <h1>Investigate an email.<br><span>Know what can be checked.</span></h1>
-        <p class="sub">Run authorized email intelligence checks with a service-by-service workspace. Modules that require prohibited account enumeration are clearly marked rather than silently pretending to work.</p>
-        <div class="search-card">
-          <label for="email">EMAIL ADDRESS</label>
-          <div class="input-row">
-            <input id="email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email">
-            <button id="check" class="check-btn">ANALYZE <span>→</span></button>
-          </div>
-          <div class="hint">Use an address you own or are authorized to investigate.</div>
-        </div>
-      </section>
-      <section class="service-panel">
-        <div class="section-title"><div><span>SERVICE DIRECTORY</span><h2>Available check modules</h2></div><small id="service-count">0 modules</small></div>
-        <div id="service-list" class="service-list"></div>
-      </section>
-      <section id="results" class="results hidden">
-        <div class="results-head"><div><div class="eyebrow">ANALYSIS COMPLETE</div><h2>Intelligence report</h2></div><button id="reset" class="ghost">NEW CHECK</button></div>
-        <div class="summary-grid">
-          <article class="metric"><span>FORMAT</span><strong id="format-status">—</strong></article>
-          <article class="metric"><span>DOMAIN</span><strong id="domain-status">—</strong></article>
-          <article class="metric"><span>DISPOSABLE</span><strong id="disposable-status">—</strong></article>
-          <article class="metric"><span>RISK</span><strong id="risk-status">—</strong></article>
-        </div>
-        <div class="details-card">
-          <div class="detail-row"><span>Email</span><b id="result-email">—</b></div>
-          <div class="detail-row"><span>Local part</span><b id="local-part">—</b></div>
-          <div class="detail-row"><span>Domain</span><b id="result-domain">—</b></div>
-        </div>
-        <div class="section-title"><span>CHECK MODULES</span><small>Results for this analysis</small></div>
-        <div id="modules" class="modules"></div>
-        <div class="notice"><strong>Service protection notice</strong><p>Some services intentionally prevent email-to-account enumeration. FlashZape does not bypass authentication, CAPTCHA, anti-bot controls, or private account protections.</p></div>
-        <div class="export-row"><button id="copy-report" class="ghost">COPY REPORT</button><button id="download-report" class="ghost">DOWNLOAD JSON</button></div>
-      </section>
-    </main>
-    <footer>FlashZape • Authorized email intelligence toolkit</footer>
-  </div>
-  <div id="toast" class="toast"></div>
-  <script src="script.js"></script>
-</body>
-</html>
+<body><div class="app-shell">
+<header class="topbar"><div class="brand"><span class="brand-mark">FZ</span><span>Flash<b>Zape</b></span></div><span class="pill"><i></i> PRIVACY-FIRST MODE</span></header>
+<main>
+<section class="hero"><div class="eyebrow">EMAIL OSINT WORKSPACE</div><h1>Investigate an email.<br><span>Know what can be checked.</span></h1><p class="sub">Run authorized email intelligence checks with a service-by-service workspace. Protected third-party account-enumeration modules are displayed but never silently claimed to work.</p><div class="search-card"><label for="email">EMAIL ADDRESS</label><div class="input-row"><input id="email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email"><button id="check" class="check-btn">ANALYZE <span>→</span></button></div><div class="hint">Use an address you own or are authorized to investigate.</div></div></section>
+<section class="service-panel"><div class="section-title"><div><span>SERVICE DIRECTORY</span><h2>Available check modules</h2></div><small id="service-count">0 modules</small></div><div class="service-tools"><input id="service-search" placeholder="Search services..."><select id="service-filter"><option value="ALL">All statuses</option><option value="AVAILABLE">Available</option><option value="BLOCKED">Protected</option></select></div><div id="service-list" class="service-list"></div></section>
+<section id="results" class="results hidden"><div class="results-head"><div><div class="eyebrow">ANALYSIS COMPLETE</div><h2>Intelligence report</h2></div><button id="reset" class="ghost">NEW CHECK</button></div><div class="summary-grid"><article class="metric"><span>FORMAT</span><strong id="format-status">—</strong></article><article class="metric"><span>DOMAIN</span><strong id="domain-status">—</strong></article><article class="metric"><span>DISPOSABLE</span><strong id="disposable-status">—</strong></article><article class="metric"><span>RISK</span><strong id="risk-status">—</strong></article></div><div class="details-card"><div class="detail-row"><span>Email</span><b id="result-email">—</b></div><div class="detail-row"><span>Local part</span><b id="local-part">—</b></div><div class="detail-row"><span>Domain</span><b id="result-domain">—</b></div></div><div class="section-title"><span>CHECK MODULES</span><small>Results for this analysis</small></div><div id="modules" class="modules"></div><div class="notice"><strong>Service protection notice</strong><p>Some services prevent email-to-account enumeration. FlashZape does not bypass authentication, CAPTCHA, anti-bot controls, or private account protections.</p></div><div class="export-row"><button id="copy-report" class="ghost">COPY REPORT</button><button id="download-report" class="ghost">DOWNLOAD JSON</button></div></section>
+</main><footer>FlashZape • Authorized email intelligence toolkit</footer></div><div id="toast" class="toast"></div><script src="script.js"></script></body></html>
