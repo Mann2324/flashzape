@@ -1,12 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#07070a"><meta name="description" content="FlashZape authorized email intelligence workspace"><title>FlashZape — Email Intelligence</title><link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0b10">
+<meta name="description" content="FlashZape public Instagram profile analyzer and content intelligence dashboard.">
+<title>FlashZape — Instagram Analyzer</title>
+<link rel="stylesheet" href="style.css">
 </head>
-<body><div class="app-shell">
-<header class="topbar"><div class="brand"><span class="brand-mark">FZ</span><span>Flash<b>Zape</b></span></div><span class="pill"><i></i> PRIVACY-FIRST MODE</span></header>
+<body>
+<div class="app-shell">
+<header class="topbar">
+  <div class="brand"><span class="brand-mark">FZ</span><span>Flash<b>Zape</b></span></div>
+  <span class="pill"><i></i> PUBLIC DATA MODE</span>
+</header>
 <main>
-<section class="hero"><div class="eyebrow">EMAIL OSINT WORKSPACE</div><h1>Investigate an email.<br><span>Know what can be checked.</span></h1><p class="sub">Run authorized email intelligence checks with a service-by-service workspace. Protected third-party account-enumeration modules are displayed but never silently claimed to work.</p><div class="search-card"><label for="email">EMAIL ADDRESS</label><div class="input-row"><input id="email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email"><button id="check" class="check-btn">ANALYZE <span>→</span></button></div><div class="hint">Use an address you own or are authorized to investigate.</div></div></section>
-<section class="service-panel"><div class="section-title"><div><span>SERVICE DIRECTORY</span><h2>Available check modules</h2></div><small id="service-count">0 modules</small></div><div class="service-tools"><input id="service-search" placeholder="Search services..."><select id="service-filter"><option value="ALL">All statuses</option><option value="AVAILABLE">Available</option><option value="BLOCKED">Protected</option></select></div><div id="service-list" class="service-list"></div></section>
-<section id="results" class="results hidden"><div class="results-head"><div><div class="eyebrow">ANALYSIS COMPLETE</div><h2>Intelligence report</h2></div><button id="reset" class="ghost">NEW CHECK</button></div><div class="summary-grid"><article class="metric"><span>FORMAT</span><strong id="format-status">—</strong></article><article class="metric"><span>DOMAIN</span><strong id="domain-status">—</strong></article><article class="metric"><span>DISPOSABLE</span><strong id="disposable-status">—</strong></article><article class="metric"><span>RISK</span><strong id="risk-status">—</strong></article></div><div class="details-card"><div class="detail-row"><span>Email</span><b id="result-email">—</b></div><div class="detail-row"><span>Local part</span><b id="local-part">—</b></div><div class="detail-row"><span>Domain</span><b id="result-domain">—</b></div></div><div class="section-title"><span>CHECK MODULES</span><small>Results for this analysis</small></div><div id="modules" class="modules"></div><div class="notice"><strong>Service protection notice</strong><p>Some services prevent email-to-account enumeration. FlashZape does not bypass authentication, CAPTCHA, anti-bot controls, or private account protections.</p></div><div class="export-row"><button id="copy-report" class="ghost">COPY REPORT</button><button id="download-report" class="ghost">DOWNLOAD JSON</button></div></section>
-</main><footer>FlashZape • Authorized email intelligence toolkit</footer></div><div id="toast" class="toast"></div><script src="script.js"></script></body></html>
+<section class="hero">
+  <div class="eyebrow">INSTAGRAM CONTENT INTELLIGENCE</div>
+  <h1>Analyze a public profile.<br><span>Find what performs.</span></h1>
+  <p class="sub">Enter a public Instagram username to build a content-performance workspace. FlashZape never asks for an Instagram password.</p>
+  <div class="search-card">
+    <label for="username">INSTAGRAM USERNAME</label>
+    <div class="input-row"><input id="username" autocomplete="off" placeholder="@username" spellcheck="false"><button id="analyze" class="check-btn">ANALYZE <span>→</span></button></div>
+    <div class="hint">Example: @instagram · Public profiles only. Live private account data is not accessed.</div>
+  </div>
+</section>
+
+<section id="results" class="results hidden">
+  <div class="profile-card">
+    <div class="avatar" id="avatar">IG</div>
+    <div class="profile-copy"><div class="eyebrow">PROFILE</div><h2 id="profile-name">—</h2><p id="profile-handle">—</p><p id="profile-bio">Public Instagram profile analysis</p></div>
+    <a id="open-instagram" class="open-btn" target="_blank" rel="noopener">OPEN PROFILE ↗</a>
+  </div>
+
+  <div class="summary-grid">
+    <article class="metric"><span>FOLLOWERS</span><strong id="followers">—</strong></article>
+    <article class="metric"><span>FOLLOWING</span><strong id="following">—</strong></article>
+    <article class="metric"><span>POSTS</span><strong id="posts">—</strong></article>
+    <article class="metric"><span>ACCOUNT SCORE</span><strong id="score">—</strong></article>
+  </div>
+
+  <div class="section-title"><div><span>CONTENT INTELLIGENCE</span><h2>What to post next</h2></div><small id="analysis-note">Public-data analysis</small></div>
+  <div class="insight-grid">
+    <article class="insight"><div class="insight-icon">🔥</div><div><span>BEST FORMAT</span><strong id="best-format">—</strong><p id="format-detail">—</p></div></article>
+    <article class="insight"><div class="insight-icon">⏱</div><div><span>POSTING RHYTHM</span><strong id="posting-rhythm">—</strong><p id="rhythm-detail">—</p></div></article>
+    <article class="insight"><div class="insight-icon">💡</div><div><span>CONTENT IDEA</span><strong id="content-idea">—</strong><p id="idea-detail">—</p></div></article>
+    <article class="insight"><div class="insight-icon">📈</div><div><span>GROWTH FOCUS</span><strong id="growth-focus">—</strong><p id="growth-detail">—</p></div></article>
+  </div>
+
+  <div class="section-title"><div><span>PERFORMANCE MODEL</span><h2>Account health</h2></div><small>Estimated from available signals</small></div>
+  <div class="health-card">
+    <div class="health-score"><strong id="health-score">—</strong><span>/100</span></div>
+    <div class="bars">
+      <div class="bar-row"><span>Profile</span><div><i id="bar-profile"></i></div><b id="health-profile">—</b></div>
+      <div class="bar-row"><span>Content</span><div><i id="bar-content"></i></div><b id="health-content">—</b></div>
+      <div class="bar-row"><span>Consistency</span><div><i id="bar-consistency"></i></div><b id="health-consistency">—</b></div>
+      <div class="bar-row"><span>Growth</span><div><i id="bar-growth"></i></div><b id="health-growth">—</b></div>
+    </div>
+  </div>
+
+  <div class="section-title"><div><span>RECENT CONTENT</span><h2>Post strategy</h2></div><small>Use your actual Insights for exact private metrics</small></div>
+  <div class="strategy-grid" id="strategy-grid"></div>
+
+  <div class="notice"><strong>Data & privacy</strong><p>This GitHub Pages version does not request Instagram passwords or attempt to bypass Instagram protections. Public profile information must come from an authorized/official data source; when live API access is unavailable, FlashZape provides an analysis model rather than inventing Instagram metrics.</p></div>
+  <div class="export-row"><button id="copy-report" class="ghost">COPY REPORT</button><button id="download-report" class="ghost">DOWNLOAD JSON</button></div>
+</section>
+</main>
+<footer>FlashZape • Public Instagram content intelligence</footer>
+</div>
+<div id="toast" class="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
