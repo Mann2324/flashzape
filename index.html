@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#07070a">
-  <meta name="description" content="FlashZape email intelligence dashboard">
+  <meta name="description" content="FlashZape privacy-first email intelligence checker">
   <title>FlashZape — Email Intelligence</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -12,41 +12,59 @@
   <div class="app-shell">
     <header class="topbar">
       <div class="brand"><span class="brand-mark">FZ</span><span>Flash<b>Zape</b></span></div>
-      <span class="pill"><i></i> SAFE CHECK MODE</span>
+      <span class="pill"><i></i> PRIVACY-FIRST MODE</span>
     </header>
+
     <main>
       <section class="hero">
-        <div class="eyebrow">EMAIL INTELLIGENCE</div>
-        <h1>Check an email.<br><span>Know its basics.</span></h1>
-        <p class="sub">Validate an email address and inspect its domain without attempting to access private accounts or bypass service protections.</p>
+        <div class="eyebrow">EMAIL OSINT WORKSPACE</div>
+        <h1>Investigate an email.<br><span>Without invading accounts.</span></h1>
+        <p class="sub">Run local email intelligence checks and prepare authorized service-verification workflows. FlashZape never asks for passwords, bypasses CAPTCHA, or attempts private account access.</p>
+
         <div class="search-card">
           <label for="email">EMAIL ADDRESS</label>
           <div class="input-row">
             <input id="email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email">
-            <button id="check" class="check-btn">CHECK <span>→</span></button>
+            <button id="check" class="check-btn">ANALYZE <span>→</span></button>
           </div>
-          <div id="input-hint" class="hint">Use an email address you own or are authorized to check.</div>
+          <div id="input-hint" class="hint">Only check addresses you own or are authorized to investigate.</div>
         </div>
       </section>
+
       <section id="results" class="results hidden">
         <div class="results-head">
-          <div><div class="eyebrow">CHECK COMPLETE</div><h2>Address overview</h2></div>
+          <div><div class="eyebrow">ANALYSIS COMPLETE</div><h2>Intelligence report</h2></div>
           <button id="reset" class="ghost">NEW CHECK</button>
         </div>
+
         <div class="summary-grid">
           <article class="metric"><span>FORMAT</span><strong id="format-status">—</strong></article>
           <article class="metric"><span>DOMAIN</span><strong id="domain-status">—</strong></article>
           <article class="metric"><span>DISPOSABLE</span><strong id="disposable-status">—</strong></article>
+          <article class="metric"><span>RISK</span><strong id="risk-status">—</strong></article>
         </div>
+
         <div class="details-card">
           <div class="detail-row"><span>Email</span><b id="result-email">—</b></div>
           <div class="detail-row"><span>Local part</span><b id="local-part">—</b></div>
           <div class="detail-row"><span>Domain</span><b id="result-domain">—</b></div>
         </div>
-        <div class="notice"><strong>Privacy-first by design</strong><p>FlashZape does not claim that an address has an account on Instagram, Spotify, Discord, or other services. Those checks can be unreliable and can expose other people's account information.</p></div>
+
+        <div class="section-title"><span>CHECK MODULES</span><small>Public / local checks only</small></div>
+        <div id="modules" class="modules"></div>
+
+        <div class="notice">
+          <strong>Why service results are different</strong>
+          <p>Third-party services can deliberately prevent account enumeration. FlashZape therefore reports only checks that can be performed without bypassing authentication, CAPTCHA, anti-bot controls, or exposing another person's private account associations.</p>
+        </div>
+
+        <div class="export-row">
+          <button id="copy-report" class="ghost">COPY REPORT</button>
+          <button id="download-report" class="ghost">DOWNLOAD JSON</button>
+        </div>
       </section>
     </main>
-    <footer>FlashZape • Email health &amp; domain checks</footer>
+    <footer>FlashZape • Authorized email intelligence toolkit</footer>
   </div>
   <div id="toast" class="toast"></div>
   <script src="script.js"></script>
