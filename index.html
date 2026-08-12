@@ -3,54 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#05070c">
-  <title>FlashZape</title>
+  <meta name="theme-color" content="#07070a">
+  <meta name="description" content="FlashZape email intelligence dashboard">
+  <title>FlashZape — Email Intelligence</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="toast" class="toast"></div>
-
-  <div class="app">
-    <header class="top">
-      <div class="brand">⚡ Flash<b>Zape</b></div>
-      <div id="status" class="status">FLASHLIGHT READY</div>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">FZ</span><span>Flash<b>Zape</b></span></div>
+      <span class="pill"><i></i> SAFE CHECK MODE</span>
     </header>
-
-    <main class="stage">
-      <div class="torch">
-        <div id="beam" class="beam"></div>
-        <div class="head"></div>
-        <div class="neck"></div>
-        <div class="body">
-          <div class="power">⏻</div>
+    <main>
+      <section class="hero">
+        <div class="eyebrow">EMAIL INTELLIGENCE</div>
+        <h1>Check an email.<br><span>Know its basics.</span></h1>
+        <p class="sub">Validate an email address and inspect its domain without attempting to access private accounts or bypass service protections.</p>
+        <div class="search-card">
+          <label for="email">EMAIL ADDRESS</label>
+          <div class="input-row">
+            <input id="email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email">
+            <button id="check" class="check-btn">CHECK <span>→</span></button>
+          </div>
+          <div id="input-hint" class="hint">Use an email address you own or are authorized to check.</div>
         </div>
-      </div>
+      </section>
+      <section id="results" class="results hidden">
+        <div class="results-head">
+          <div><div class="eyebrow">CHECK COMPLETE</div><h2>Address overview</h2></div>
+          <button id="reset" class="ghost">NEW CHECK</button>
+        </div>
+        <div class="summary-grid">
+          <article class="metric"><span>FORMAT</span><strong id="format-status">—</strong></article>
+          <article class="metric"><span>DOMAIN</span><strong id="domain-status">—</strong></article>
+          <article class="metric"><span>DISPOSABLE</span><strong id="disposable-status">—</strong></article>
+        </div>
+        <div class="details-card">
+          <div class="detail-row"><span>Email</span><b id="result-email">—</b></div>
+          <div class="detail-row"><span>Local part</span><b id="local-part">—</b></div>
+          <div class="detail-row"><span>Domain</span><b id="result-domain">—</b></div>
+        </div>
+        <div class="notice"><strong>Privacy-first by design</strong><p>FlashZape does not claim that an address has an account on Instagram, Spotify, Discord, or other services. Those checks can be unreliable and can expose other people's account information.</p></div>
+      </section>
     </main>
-
-    <div class="controls">
-      <button class="btn" id="on">
-        ⏻ TURN ON
-        <small>Start flashlight</small>
-      </button>
-
-      <button class="btn off" id="off">
-        🔒 TURN OFF
-        <small>Unlock for ₹10</small>
-      </button>
-    </div>
+    <footer>FlashZape • Email health &amp; domain checks</footer>
   </div>
-
-  <div class="modal" id="modal">
-    <div class="card">
-      <div class="lock">🔒</div>
-      <h1>Turn Off Flashlight</h1>
-      <p>Pay ₹10 to unlock and turn off the flashlight.</p>
-      <div class="price">₹10</div>
-      <button class="pay" id="pay">PAY ₹10 WITH RAZORPAY</button>
-    </div>
-  </div>
-
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <div id="toast" class="toast"></div>
   <script src="script.js"></script>
 </body>
 </html>
