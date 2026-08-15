@@ -1,130 +1,67 @@
-const host = document.getElementById('webgl');
+(() => {
+  const stage=document.getElementById('stage');
+  const progressBar=document.getElementById('progressBar'), progressText=document.getElementById('progressText');
+  const chapter=document.getElementById('chapter'), hint=document.getElementById('hint');
+  const loader=document.getElementById('loader');
 
-if (host && window.THREE) {
-  const THREE = window.THREE;
-  const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x090908, 0.035);
-  const camera = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, 0.1, 100);
-  camera.position.set(0, 0.15, 7.5);
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(30,innerWidth/innerHeight,.1,100); camera.position.set(0,1.1,10);
+  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,1.8)); renderer.setSize(innerWidth,innerHeight); renderer.outputColorSpace=THREE.SRGBColorSpace; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.15; stage.appendChild(renderer.domElement);
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
-  renderer.setSize(innerWidth, innerHeight);
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.25;
-  host.appendChild(renderer.domElement);
+  scene.add(new THREE.HemisphereLight(0xcccccc,0x080808,1.3));
+  const key=new THREE.DirectionalLight(0xffffff,4.2); key.position.set(4,6,6); scene.add(key);
+  const rim=new THREE.PointLight(0x5f7fa0,18,15); rim.position.set(-5,3,2); scene.add(rim);
+  const warm=new THREE.PointLight(0xd8a26a,11,12); warm.position.set(5,1,-3); scene.add(warm);
 
-  scene.add(new THREE.HemisphereLight(0xd9d0c2, 0x050505, 1.5));
-  const key = new THREE.DirectionalLight(0xfff0d0, 5); key.position.set(3, 5, 5); scene.add(key);
-  const rim = new THREE.PointLight(0xbca37b, 22, 12); rim.position.set(-4, 2, 3); scene.add(rim);
-  const fill = new THREE.PointLight(0x6f8792, 12, 10); fill.position.set(4, -2, -2); scene.add(fill);
+  const car=new THREE.Group(); scene.add(car); car.position.y=-.55;
+  const paint=new THREE.MeshPhysicalMaterial({color:0x1c2228,metalness:.78,roughness:.16,clearcoat:1,clearcoatRoughness:.08});
+  const glass=new THREE.MeshPhysicalMaterial({color:0x07090b,metalness:.1,roughness:.06,transmission:.18,transparent:true,opacity:.9,clearcoat:1});
+  const black=new THREE.MeshStandardMaterial({color:0x030303,metalness:.85,roughness:.22});
+  const lightMat=new THREE.MeshStandardMaterial({color:0xeaf5ff,emissive:0xbadfff,emissiveIntensity:7});
+  const tireMat=new THREE.MeshStandardMaterial({color:0x030303,roughness:.72,metalness:.05});
+  const metal=new THREE.MeshStandardMaterial({color:0x8f969d,metalness:1,roughness:.2});
 
-  const bottle = new THREE.Group();
-  scene.add(bottle);
-  const bodyMat = new THREE.MeshPhysicalMaterial({ color: 0x171714, metalness: .22, roughness: .2, clearcoat: 1, clearcoatRoughness: .12 });
-  const liquidMat = new THREE.MeshPhysicalMaterial({ color: 0x4b3821, metalness: .08, roughness: .2, transmission: .12, thickness: 1.5, clearcoat: 1, transparent: true, opacity: .82 });
-  const metalMat = new THREE.MeshPhysicalMaterial({ color: 0x9b9280, metalness: .92, roughness: .2, clearcoat: 1 });
+  const box=(w,h,d,x,y,z,mat,rad=0)=>{const g=rad?new THREE.BoxGeometry(w,h,d,6,3,6):new THREE.BoxGeometry(w,h,d);const m=new THREE.Mesh(g,mat);m.position.set(x,y,z);m.castShadow=true;return m};
+  const body=box(5.8,.65,2.18,0,.35,0,paint); car.add(body);
+  const hood=box(2.2,.28,2.02,-1.75,.72,0,paint); car.add(hood);
+  const rear=box(1.65,.5,2.04,2.05,.62,0,paint); car.add(rear);
+  const roof=new THREE.Mesh(new THREE.SphereGeometry(1,32,16,0,Math.PI*2,0,Math.PI/2),paint); roof.scale.set(2.05,.72,1.05); roof.position.set(.25,1.02,0); car.add(roof);
+  const windshield=box(1.6,.5,1.86,.02,1.03,0,glass); windshield.rotation.z=-.05; car.add(windshield);
+  const sideGlass=box(1.65,.45,.035,.45,1.02,1.01,glass); sideGlass.rotation.z=-.08; car.add(sideGlass); sideGlass=sideGlass.clone(); sideGlass.position.z=-1.01; car.add(sideGlass);
+  const splitter=box(5.6,.1,2.25,-.05,.03,0,black); car.add(splitter);
+  const side=box(5.4,.22,.08,0,.4,1.12,metal); car.add(side); car.add(side.clone().translateZ(-2.24));
+  const frontBar=box(1.9,.06,.06,-2.92,.55,1.08,lightMat); car.add(frontBar); const frontBar2=frontBar.clone();frontBar2.position.z=-1.08;car.add(frontBar2);
+  const grille=box(1.2,.18,.08,-2.93,.34,0,black); car.add(grille);
+  const wheels=[];
+  [-1.85,1.85].forEach(x=>[-1.14,1.14].forEach(z=>{const w=new THREE.Mesh(new THREE.CylinderGeometry(.55,.55,.28,40),tireMat);w.rotation.x=Math.PI/2;w.position.set(x,.02,z);car.add(w);wheels.push(w);const hub=new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,.3,32),metal);hub.rotation.x=Math.PI/2;hub.position.copy(w.position);car.add(hub)}));
+  const under=box(4.8,.12,1.8,0,-.08,0,black);car.add(under);
 
-  const body = new THREE.Mesh(new THREE.BoxGeometry(2.15, 3.25, .95), bodyMat);
-  body.position.y = -.15; bottle.add(body);
-  const liquid = new THREE.Mesh(new THREE.BoxGeometry(1.82, 2.7, .72), liquidMat);
-  liquid.position.y = -.38; bottle.add(liquid);
-  const shoulder = new THREE.Mesh(new THREE.BoxGeometry(1.28, .36, .7), bodyMat);
-  shoulder.position.y = 1.56; bottle.add(shoulder);
-  const neck = new THREE.Mesh(new THREE.CylinderGeometry(.35, .35, .48, 48), metalMat);
-  neck.position.y = 1.93; bottle.add(neck);
-  const collar = new THREE.Mesh(new THREE.CylinderGeometry(.49, .49, .11, 48), metalMat);
-  collar.position.y = 1.72; bottle.add(collar);
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.MeshStandardMaterial({color:0x070707,metalness:.35,roughness:.35})); floor.rotation.x=-Math.PI/2;floor.position.y=-.62;scene.add(floor);
+  const glow=new THREE.Mesh(new THREE.PlaneGeometry(18,3),new THREE.MeshBasicMaterial({color:0x24384c,transparent:true,opacity:.2}));glow.rotation.x=-Math.PI/2;glow.position.y=-.6;glow.position.z=1;scene.add(glow);
 
-  const cap = new THREE.Group();
-  bottle.add(cap); cap.position.y = 2.48;
-  const capMesh = new THREE.Mesh(new THREE.CylinderGeometry(.46, .46, .9, 48), metalMat);
-  cap.add(capMesh);
-  const capTop = new THREE.Mesh(new THREE.CylinderGeometry(.33, .33, .08, 48), new THREE.MeshStandardMaterial({ color: 0x171715, metalness: .8, roughness: .16 }));
-  capTop.position.y = .49; cap.add(capTop);
+  const dustN=260, pos=new Float32Array(dustN*3); for(let i=0;i<dustN;i++){pos[i*3]=(Math.random()-.5)*14;pos[i*3+1]=Math.random()*4-1;pos[i*3+2]=(Math.random()-.5)*10-3} const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pos,3)); const dust=new THREE.Points(pg,new THREE.PointsMaterial({color:0xb7c7d8,size:.018,transparent:true,opacity:.35}));scene.add(dust);
 
-  const label = new THREE.Mesh(new THREE.PlaneGeometry(1.45, .58), new THREE.MeshBasicMaterial({ color: 0x0b0b0a }));
-  label.position.set(0, -.1, .49); bottle.add(label);
+  let target=0,current=0,started=false;
+  const clamp=v=>Math.max(0,Math.min(1,v));
+  function setProgress(p){target=clamp(p);started=true;hint.style.opacity='0'}
+  addEventListener('scroll',()=>{const r=document.querySelector('.reveal').getBoundingClientRect(); const p=clamp(-r.top/(r.height-innerHeight));setProgress(p)}, {passive:true});
+  let drag=false,lastX=0;
+  renderer.domElement.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX});
+  addEventListener('pointerup',()=>drag=false);
+  addEventListener('pointermove',e=>{if(!drag)return;setProgress(target+(lastX-e.clientX)/innerWidth*.75);lastX=e.clientX;window.scrollTo(0,document.querySelector('.reveal').offsetTop+target*(document.querySelector('.reveal').offsetHeight-innerHeight))});
 
-  // A lightweight scent trail visible during the opening sequence.
-  const particleCount = 320;
-  const positions = new Float32Array(particleCount * 3);
-  const speeds = [];
-  for (let i = 0; i < particleCount; i++) {
-    positions[i * 3] = (Math.random() - .5) * 1.8;
-    positions[i * 3 + 1] = 1.85 + Math.random() * 2.5;
-    positions[i * 3 + 2] = (Math.random() - .5) * 1.3;
-    speeds.push(.15 + Math.random() * .5);
+  function animate(){requestAnimationFrame(animate);current+=(target-current)*.075;const p=current;
+    car.rotation.y=-.8+p*Math.PI*2.3; car.rotation.x=(.02+p*.035); car.position.y=-.55+Math.sin(p*Math.PI)*.22; car.scale.setScalar(.82+p*.22);
+    camera.position.x=Math.sin(p*Math.PI*2.1)*1.9; camera.position.y=1.0+Math.sin(p*Math.PI)*.45; camera.position.z=10.2-p*4.5; camera.lookAt(0,.55,0);
+    wheels.forEach(w=>w.rotation.z=p*5);
+    glow.material.opacity=.08+p*.25; dust.rotation.y=p*.3;
+    progressBar.style.width=(p*100)+'%';progressText.textContent=String(Math.round(p*100)).padStart(2,'0');
+    const ch=p<.25?'01 / SILHOUETTE':p<.52?'02 / THE FORM':p<.76?'03 / LIGHT SIGNATURE':'04 / THE REVEAL';chapter.textContent=ch;
+    document.querySelector('.spec-power').style.opacity=p>.42?.9:0;document.querySelector('.spec-speed').style.opacity=p>.58?.9:0;
+    renderer.render(scene,camera);
   }
-  const pGeo = new THREE.BufferGeometry();
-  pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  const pMat = new THREE.PointsMaterial({ color: 0xd9c6a0, size: .026, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending });
-  scene.add(new THREE.Points(pGeo, pMat));
-
-  const state = { rot: 0, cap: 0, y: -.1, scale: 1 };
-  const tl = window.gsap && window.ScrollTrigger ? gsap.timeline({ scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom bottom', scrub: 1 } }) : null;
-  if (tl) {
-    gsap.registerPlugin(ScrollTrigger);
-    tl.to(state, { rot: Math.PI * 2.2, duration: .28, ease: 'none' }, 0)
-      .to(state, { cap: 1, duration: .13, ease: 'power2.inOut' }, .15)
-      .to(state, { y: .35, scale: 1.08, duration: .25, ease: 'power2.inOut' }, .25)
-      .to(state, { y: -.15, scale: .86, duration: .25, ease: 'power2.inOut' }, .53)
-      .to(state, { rot: Math.PI * 4.2, y: 0, scale: .98, duration: .32, ease: 'power1.inOut' }, .70)
-      .to(state, { cap: 0, y: -.05, scale: .82, duration: .18, ease: 'power2.in' }, .88);
-  }
-
-  function burst() {
-    for (let i = 0; i < 55; i++) {
-      const q = new THREE.Mesh(new THREE.SphereGeometry(.012 + Math.random() * .018, 6, 6), new THREE.MeshBasicMaterial({ color: 0xd9c6a0, transparent: true, opacity: .7 }));
-      q.position.set(.03, 2.08, .55);
-      q.userData = { life: 1, vel: new THREE.Vector3(.12 + Math.random() * .2, (Math.random() - .5) * .06, (Math.random() - .5) * .15) };
-      scene.add(q);
-      setTimeout(() => { scene.remove(q); q.geometry.dispose(); q.material.dispose(); }, 900);
-    }
-  }
-
-  function animate() {
-    requestAnimationFrame(animate);
-    const t = performance.now() * .001;
-    bottle.rotation.y = state.rot + Math.sin(t * .55) * .035;
-    bottle.rotation.x = Math.sin(t * .35) * .025;
-    bottle.position.y = state.y;
-    bottle.scale.setScalar(state.scale);
-    cap.position.y = 2.48 + state.cap * .82;
-    const pos = pGeo.attributes.position.array;
-    for (let i = 0; i < particleCount; i++) {
-      pos[i * 3 + 1] += speeds[i] * .003;
-      if (pos[i * 3 + 1] > 5.1) pos[i * 3 + 1] = 1.8;
-      pos[i * 3] += Math.sin(t + i) * .0007;
-    }
-    pGeo.attributes.position.needsUpdate = true;
-    pMat.opacity = state.cap * .22;
-    renderer.render(scene, camera);
-  }
+  addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.8))});
+  setTimeout(()=>{document.querySelector('.loader-line i').classList.add('run')},80);setTimeout(()=>{loader.style.opacity='0';setTimeout(()=>loader.remove(),850)},1500);
   animate();
-
-  document.getElementById('sprayBtn')?.addEventListener('click', () => {
-    burst();
-    gsap?.fromTo('#sprayBtn', { scale: 1 }, { scale: 1.05, duration: .12, yoyo: true, repeat: 1 });
-  });
-  addEventListener('resize', () => {
-    camera.aspect = innerWidth / innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(innerWidth, innerHeight);
-    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
-  });
-}
-
-// Bag interaction.
-let bagCount = 0;
-const bag = document.getElementById('cart');
-const backdrop = document.getElementById('cartBackdrop');
-const openBag = () => { bag?.classList.add('open'); backdrop?.classList.add('open'); bag?.setAttribute('aria-hidden', 'false'); };
-const closeBag = () => { bag?.classList.remove('open'); backdrop?.classList.remove('open'); bag?.setAttribute('aria-hidden', 'true'); };
-document.getElementById('bagBtn')?.addEventListener('click', openBag);
-document.getElementById('cartClose')?.addEventListener('click', closeBag);
-backdrop?.addEventListener('click', closeBag);
-document.getElementById('buyBtn')?.addEventListener('click', () => { bagCount = 1; document.getElementById('bagCount').textContent = bagCount; document.getElementById('cartTotal').textContent = '₹8,900'; openBag(); });
-
-window.addEventListener('load', () => setTimeout(() => { const l = document.getElementById('loader'); if (l) { l.style.opacity = '0'; setTimeout(() => l.remove(), 900); } }, 800));
+})();
