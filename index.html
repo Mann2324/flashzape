@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090806">
+  <meta name="description" content="NOIRÉ — an immersive luxury fragrance house.">
+  <title>NOIRÉ — The Art of Scent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="grain"></div>
+  <header class="nav">
+    <a class="brand" href="#top">NOIRÉ<span>PARFUMS</span></a>
+    <nav>
+      <a href="#collection">Collection</a>
+      <a href="#story">The House</a>
+      <a href="#journal">Journal</a>
+    </nav>
+    <button class="bag" aria-label="Open bag">Bag <span id="bagCount">0</span></button>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">EAU DE PARFUM · 2026</p>
+        <h1>A scent<br><em>worth remembering.</em></h1>
+        <p class="lead">NOIRÉ creates intimate fragrances for people who leave an impression without asking for attention.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#collection">Explore the collection</a>
+          <button class="text-button" id="discoverBtn">Discover your scent <span>↗</span></button>
+        </div>
+      </div>
+      <div class="scene-wrap" aria-label="Interactive 3D perfume bottle">
+        <div id="scene"></div>
+        <div class="orbit-label">NO. 01 · L'OMBRE</div>
+        <div class="scene-glow"></div>
+      </div>
+      <div class="scroll-note">SCROLL TO DISCOVER <span>↓</span></div>
+    </section>
+
+    <section class="manifesto" id="story">
+      <p class="eyebrow">THE HOUSE OF NOIRÉ</p>
+      <h2>Luxury is not louder.<br><em>It lingers.</em></h2>
+      <p>Born between old-world perfumery and modern minimalism, every NOIRÉ composition is built around contrast: dark woods against luminous citrus, warm skin against cool air, memory against the present.</p>
+    </section>
+
+    <section class="collection" id="collection">
+      <div class="section-head"><div><p class="eyebrow">THE COLLECTION</p><h2>Three signatures.<br><em>One identity.</em></h2></div><span>01 — 03</span></div>
+      <div class="products">
+        <article class="product featured" data-name="L'Ombre" data-price="149">
+          <div class="product-visual visual-dark"><div class="bottle-css"><i></i><b>NOIRÉ</b><small>01</small></div></div>
+          <div class="product-info"><span>01 · WOODY / AMBER</span><h3>L'Ombre</h3><p>Black cedar · saffron · smoked vanilla</p><strong>$149</strong><button class="add">Add to bag</button></div>
+        </article>
+        <article class="product" data-name="Velours" data-price="129">
+          <div class="product-visual visual-rose"><div class="bottle-css rose"><i></i><b>NOIRÉ</b><small>02</small></div></div>
+          <div class="product-info"><span>02 · FLORAL / MUSK</span><h3>Velours</h3><p>Rose absolute · iris · soft musk</p><strong>$129</strong><button class="add">Add to bag</button></div>
+        </article>
+        <article class="product" data-name="Éclipse" data-price="139">
+          <div class="product-visual visual-silver"><div class="bottle-css silver"><i></i><b>NOIRÉ</b><small>03</small></div></div>
+          <div class="product-info"><span>03 · CITRUS / WOODS</span><h3>Éclipse</h3><p>Bergamot · vetiver · mineral woods</p><strong>$139</strong><button class="add">Add to bag</button></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="quote" id="journal"><div class="quote-mark">“</div><blockquote>A fragrance should never enter a room before you do. It should make the room remember you after you've left.</blockquote><p>— THE NOIRÉ MANIFESTO</p></section>
+
+    <section class="newsletter">
+      <div><p class="eyebrow">PRIVATE ACCESS</p><h2>Enter the world<br><em>of NOIRÉ.</em></h2></div>
+      <form id="newsletterForm"><input type="email" placeholder="Your email address" aria-label="Email address" required><button class="button primary">Join the house</button></form>
+    </section>
+  </main>
+
+  <footer><a class="brand" href="#top">NOIRÉ<span>PARFUMS</span></a><p>© 2026 NOIRÉ. Crafted with intention.</p><div><a href="#collection">Shop</a><a href="#story">About</a><a href="#journal">Journal</a></div></footer>
+
+  <div class="toast" id="toast">Added to your bag.</div>
+  <div class="modal" id="modal"><div class="modal-card"><button class="close" id="closeModal">×</button><p class="eyebrow">THE SCENT FINDER</p><h2>What do you want<br><em>to be remembered as?</em></h2><div class="choices"><button data-scent="L'Ombre">Mysterious & magnetic</button><button data-scent="Velours">Soft & unforgettable</button><button data-scent="Éclipse">Clean & commanding</button></div><p id="result"></p></div></div>
+
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
