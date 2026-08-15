@@ -1,85 +1,33 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#090806">
-  <meta name="description" content="NOIRÉ — an immersive luxury fragrance house.">
-  <title>NOIRÉ — The Art of Scent</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#070706" />
+  <meta name="description" content="DOMANI — a cinematic 3D fragrance experience." />
+  <title>DOMANI — Parfum</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Italiana&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+    {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}
+  </script>
 </head>
 <body>
-  <div class="grain"></div>
-  <header class="nav">
-    <a class="brand" href="#top">NOIRÉ<span>PARFUMS</span></a>
-    <nav>
-      <a href="#collection">Collection</a>
-      <a href="#story">The House</a>
-      <a href="#journal">Journal</a>
-    </nav>
-    <button class="bag" aria-label="Open bag">Bag <span id="bagCount">0</span></button>
-  </header>
-
+  <div class="noise"></div><div class="loader" id="loader"><span>DOMANI</span><i></i></div>
+  <header class="nav"><a class="wordmark" href="#top">DOMANI</a><div class="nav-links"><a href="#story">The story</a><a href="#notes">Notes</a><a href="#details">Details</a></div><button class="bag" id="bagBtn">Bag <span id="bagCount">0</span></button></header>
   <main id="top">
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">EAU DE PARFUM · 2026</p>
-        <h1>A scent<br><em>worth remembering.</em></h1>
-        <p class="lead">NOIRÉ creates intimate fragrances for people who leave an impression without asking for attention.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#collection">Explore the collection</a>
-          <button class="text-button" id="discoverBtn">Discover your scent <span>↗</span></button>
-        </div>
-      </div>
-      <div class="scene-wrap" aria-label="Interactive 3D perfume bottle">
-        <div id="scene"></div>
-        <div class="orbit-label">NO. 01 · L'OMBRE</div>
-        <div class="scene-glow"></div>
-      </div>
-      <div class="scroll-note">SCROLL TO DISCOVER <span>↓</span></div>
+    <section class="hero-scene" id="hero"><div id="webgl"></div>
+      <div class="hero-copy hero-left"><p class="eyebrow">EAU DE PARFUM · 50 ML</p><h1>THE<br><em>SCENT</em><br>OF TOMORROW.</h1><p class="hero-sub">An architectural fragrance built around luminous citrus, black tea and warm woods.</p></div>
+      <div class="hero-copy hero-right"><div class="scroll-cue"><span>01</span><div class="line"></div><span>SCROLL TO OPEN</span></div><button class="spray-btn" id="sprayBtn"><span class="dot"></span> Press to experience</button></div>
+      <div class="hero-bottom"><span>DOMANI / 001</span><span>MADE IN ITALY</span><span>01 — 04</span></div>
     </section>
-
-    <section class="manifesto" id="story">
-      <p class="eyebrow">THE HOUSE OF NOIRÉ</p>
-      <h2>Luxury is not louder.<br><em>It lingers.</em></h2>
-      <p>Born between old-world perfumery and modern minimalism, every NOIRÉ composition is built around contrast: dark woods against luminous citrus, warm skin against cool air, memory against the present.</p>
-    </section>
-
-    <section class="collection" id="collection">
-      <div class="section-head"><div><p class="eyebrow">THE COLLECTION</p><h2>Three signatures.<br><em>One identity.</em></h2></div><span>01 — 03</span></div>
-      <div class="products">
-        <article class="product featured" data-name="L'Ombre" data-price="149">
-          <div class="product-visual visual-dark"><div class="bottle-css"><i></i><b>NOIRÉ</b><small>01</small></div></div>
-          <div class="product-info"><span>01 · WOODY / AMBER</span><h3>L'Ombre</h3><p>Black cedar · saffron · smoked vanilla</p><strong>$149</strong><button class="add">Add to bag</button></div>
-        </article>
-        <article class="product" data-name="Velours" data-price="129">
-          <div class="product-visual visual-rose"><div class="bottle-css rose"><i></i><b>NOIRÉ</b><small>02</small></div></div>
-          <div class="product-info"><span>02 · FLORAL / MUSK</span><h3>Velours</h3><p>Rose absolute · iris · soft musk</p><strong>$129</strong><button class="add">Add to bag</button></div>
-        </article>
-        <article class="product" data-name="Éclipse" data-price="139">
-          <div class="product-visual visual-silver"><div class="bottle-css silver"><i></i><b>NOIRÉ</b><small>03</small></div></div>
-          <div class="product-info"><span>03 · CITRUS / WOODS</span><h3>Éclipse</h3><p>Bergamot · vetiver · mineral woods</p><strong>$139</strong><button class="add">Add to bag</button></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="quote" id="journal"><div class="quote-mark">“</div><blockquote>A fragrance should never enter a room before you do. It should make the room remember you after you've left.</blockquote><p>— THE NOIRÉ MANIFESTO</p></section>
-
-    <section class="newsletter">
-      <div><p class="eyebrow">PRIVATE ACCESS</p><h2>Enter the world<br><em>of NOIRÉ.</em></h2></div>
-      <form id="newsletterForm"><input type="email" placeholder="Your email address" aria-label="Email address" required><button class="button primary">Join the house</button></form>
-    </section>
+    <section class="transition" id="story"><div class="section-kicker">02 / ORIGIN</div><div class="story-grid"><div><p class="giant">A quiet<br><em>statement.</em></p></div><div class="story-text"><p>DOMANI begins where restraint meets desire. A clear, modern composition with a dark pulse underneath — designed to sit close to the skin and stay there.</p><p>Every detail is deliberate: the weighted glass, the brushed-metal atomizer, the magnetic cap and the trail that appears only after you move.</p><a class="text-link" href="#notes">DISCOVER THE COMPOSITION <span>↗</span></a></div></div></section>
+    <section class="notes" id="notes"><div class="section-kicker">03 / THE COMPOSITION</div><div class="notes-head"><h2>THREE<br><em>WAVES.</em></h2><p>A fragrance that evolves rather than announces itself.</p></div><div class="notes-grid"><article class="note-card"><span>01</span><div class="note-orb citrus"></div><h3>TOP / BERGAMOT</h3><p>Italian bergamot, bitter orange and pink pepper open with a crisp flash.</p></article><article class="note-card"><span>02</span><div class="note-orb tea"></div><h3>HEART / BLACK TEA</h3><p>Black tea, iris and violet leaf create a dry, mineral softness.</p></article><article class="note-card"><span>03</span><div class="note-orb wood"></div><h3>BASE / VETIVER</h3><p>Vetiver, cedar and skin musk leave a warm, smoky signature.</p></article></div></section>
+    <section class="details" id="details"><div class="detail-image"><div class="mini-bottle"><div class="mini-cap"></div><div class="mini-glass"></div></div></div><div class="detail-copy"><div class="section-kicker">04 / THE OBJECT</div><h2>MADE TO<br><em>BE HELD.</em></h2><div class="specs"><div><span>GLASS</span><strong>Heavy, clear, weighted</strong></div><div><span>CAP</span><strong>Brushed aluminium / magnetic</strong></div><div><span>ATOMIZER</span><strong>Fine mist, 0.09 ml / spray</strong></div><div><span>VOLUME</span><strong>50 ml / 1.69 fl oz</strong></div></div><button class="buy" id="buyBtn">ADD DOMANI 001 — ₹8,900 <span>↗</span></button></div></section>
+    <section class="finale"><div class="finale-word">DOMANI</div><p>Tomorrow, worn today.</p><div class="final-actions"><a href="#top">BACK TO TOP ↑</a><a href="mailto:hello@domani.in">CONTACT</a></div></section>
   </main>
-
-  <footer><a class="brand" href="#top">NOIRÉ<span>PARFUMS</span></a><p>© 2026 NOIRÉ. Crafted with intention.</p><div><a href="#collection">Shop</a><a href="#story">About</a><a href="#journal">Journal</a></div></footer>
-
-  <div class="toast" id="toast">Added to your bag.</div>
-  <div class="modal" id="modal"><div class="modal-card"><button class="close" id="closeModal">×</button><p class="eyebrow">THE SCENT FINDER</p><h2>What do you want<br><em>to be remembered as?</em></h2><div class="choices"><button data-scent="L'Ombre">Mysterious & magnetic</button><button data-scent="Velours">Soft & unforgettable</button><button data-scent="Éclipse">Clean & commanding</button></div><p id="result"></p></div></div>
-
-  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
-  <script type="module" src="script.js"></script>
-</body>
-</html>
+  <aside class="cart" id="cart" aria-hidden="true"><button class="cart-close" id="cartClose">×</button><p class="eyebrow">YOUR BAG</p><h2>DOMANI 001</h2><div class="cart-product"><div class="cart-bottle"></div><div><p>EAU DE PARFUM</p><strong>50 ML</strong><small>₹8,900</small></div></div><div class="cart-total"><span>SUBTOTAL</span><strong id="cartTotal">₹0</strong></div><button class="checkout">CHECKOUT <span>↗</span></button></aside><div class="cart-backdrop" id="cartBackdrop"></div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script><script type="module" src="script.js"></script>
+</body></html>
